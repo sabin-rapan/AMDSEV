@@ -130,6 +130,9 @@ while [ -n "$1" ]; do
 		-default-network)
 				DEFAULT_NETWORK="1"
 				;;
+		-vnc)           VNC_PORT=$2
+				shift
+				;;
 		*) 		usage
 				;;
 	esac
@@ -224,6 +227,8 @@ add_opts "-drive if=pflash,format=raw,unit=1,file=${UEFI_VARS}"
 
 # add CDROM if specified
 [ -n "${CDROM_FILE}" ] && add_opts "-drive file=${CDROM_FILE},media=cdrom -boot d"
+# add VNC port if specified
+[ -n "${VNC_PORT}" ] && add_opts "-vnc :${VNC_PORT}" && echo "Starting VNC on port ${VNC_PORT}"
 
 # NOTE: as of QEMU 7.2.0, libslirp-dev 4.7+ is needed, but fairly recent
 # distros like Ubuntu 20.04 still only provide 4.1, so only enable
